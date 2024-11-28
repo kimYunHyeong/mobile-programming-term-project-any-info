@@ -6,9 +6,25 @@
     android:padding="16dp"
     android:gravity="center">
 
-    <RecyclerView
-        android:id="@+id/recyclerView"
+
+    <!-- 제목 표시 TextView -->
+    <TextView
+        android:id="@+id/titleTextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"/>
+        android:layout_height="wrap_content"
+        android:text="Any Info."
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="@color/teal_200"
+        android:clickable="true"
+        android:focusable="true"
+        />
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </LinearLayout>

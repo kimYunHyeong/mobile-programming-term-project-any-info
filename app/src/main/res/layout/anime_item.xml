@@ -2,21 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="16dp"
-    android:gravity="center_vertical">
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/animeImageView"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_launcher_foreground" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+    />
+
+
 
     <TextView
-        android:id="@+id/animeTitleTextView"
-        android:layout_width="wrap_content"
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="애니메이션 제목"
-        android:textSize="18sp" />
+        android:textSize="24sp"
+        android:textColor="#000"
+        android:paddingTop="4dp"
+        android:gravity="center"/>
 </LinearLayout>
