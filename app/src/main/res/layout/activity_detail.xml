@@ -1,34 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- 애니메이션 제목 -->
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Anime Title"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <!-- 애니메이션 이미지 -->
-    <ImageView
-        android:id="@+id/animeImageView"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop" />
-
-    <!-- 애니메이션 설명 -->
-    <TextView
-        android:id="@+id/descriptionTextView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Anime Description"
-        android:textSize="16sp"
-        android:layout_marginTop="16dp" />
+        android:orientation="vertical">
 
-</LinearLayout>
+        <!-- 애니메이션 제목 -->
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anime Title"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <!-- 애니메이션 이미지 -->
+        <ImageView
+            android:id="@+id/animeImageView"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop" />
+
+        <!-- 방영 기간 -->
+        <TextView
+            android:id="@+id/airedFromTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aired From: Not Available"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/airedToTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aired To: Not Available"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <!-- 장르 -->
+        <TextView
+            android:id="@+id/genresTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Genres: Not Available"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <!-- 랭크 -->
+        <TextView
+            android:id="@+id/rankTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rank: Not Available"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <!-- 등급 -->
+        <TextView
+            android:id="@+id/ratingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rating: Not Available"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <!-- 출처 -->
+        <TextView
+            android:id="@+id/sourceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Source: Not Available"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <!-- 애니메이션 설명 -->
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Anime Description"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>

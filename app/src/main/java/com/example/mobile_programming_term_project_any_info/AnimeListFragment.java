@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.mobile_programming_term_project_any_info.AnimeAdapter;
 import com.example.mobile_programming_term_project_any_info.api.JikanApiService;
 import com.example.mobile_programming_term_project_any_info.api.RetrofitClient;
 import com.example.mobile_programming_term_project_any_info.AnimeResponse.AnimeListResponse;
@@ -115,9 +114,10 @@ public class AnimeListFragment extends Fragment {
             // 애니메이션 항목 클릭 시 세부 정보 페이지로 이동
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra("anime_id", anime.getTitle());  // 애니메이션 제목을 전달하거나 ID로 변경
+                intent.putExtra("anime_id", anime.getId());  // ID를 넘겨줌
                 context.startActivity(intent);
             });
+
         }
 
         @Override
