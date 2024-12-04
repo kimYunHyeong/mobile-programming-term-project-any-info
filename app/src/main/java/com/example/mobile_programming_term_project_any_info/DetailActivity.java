@@ -109,6 +109,9 @@ import java.util.List;
 
                 // 텍스트를 TextView에 설정
                 textView.setText(spannableText);
+
+
+                
             }
 
 
