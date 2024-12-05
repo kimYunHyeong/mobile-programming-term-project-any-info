@@ -2,6 +2,7 @@ package com.example.mobile_programming_term_project_any_info;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ import java.util.List;
         private TextView sourceTextView;
         private ImageView animeImageView;
         private JikanApiService apiService;
+        private Button backButton;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ import java.util.List;
             rankTextView = findViewById(R.id.rankTextView);
             ratingTextView = findViewById(R.id.ratingTextView);
             sourceTextView = findViewById(R.id.sourceTextView);
+            Button backButton = findViewById(R.id.backButton);
 
             // 인텐트에서 데이터 받기
             Intent intent = getIntent();
@@ -67,6 +70,18 @@ import java.util.List;
             // Retrofit API 호출
             apiService = RetrofitClient.getClient().create(JikanApiService.class);
             Call<AnimeResponse> call = apiService.getAnimeById(mal_id);
+
+
+
+
+            backButton.setOnClickListener(v -> {
+                // MainActivity로 돌아가기
+                Intent backIntent = new Intent(DetailActivity.this, MainActivity.class);
+                backIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(backIntent);
+                finish();  // 현재 Activity 종료
+            });
+
 
             // 비동기 방식으로 네트워크 요청 처리
             call.enqueue(new Callback<AnimeResponse>() {
