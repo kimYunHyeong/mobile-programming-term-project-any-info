@@ -136,5 +136,12 @@ public class AnimeListFragment extends Fragment {
                 imageView = itemView.findViewById(R.id.animeImageView);
             }
         }
+
+        // 애니메이션 리스트를 업데이트하는 메서드
+        public void updateAnimeList(List<AnimeListResponse> newAnimeList) {
+            animeList.clear();  // 기존 데이터 삭제
+            animeList.addAll(newAnimeList);  // 새 데이터 추가
+            adapter.notifyDataSetChanged();  // RecyclerView 갱신
+        }
     }
 }

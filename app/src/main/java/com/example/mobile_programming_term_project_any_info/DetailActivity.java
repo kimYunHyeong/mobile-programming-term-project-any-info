@@ -56,7 +56,7 @@ import java.util.List;
             rankTextView = findViewById(R.id.rankTextView);
             ratingTextView = findViewById(R.id.ratingTextView);
             sourceTextView = findViewById(R.id.sourceTextView);
-            Button backButton = findViewById(R.id.backButton);
+            backButton = findViewById(R.id.backButton);
 
             // 인텐트에서 데이터 받기
             Intent intent = getIntent();

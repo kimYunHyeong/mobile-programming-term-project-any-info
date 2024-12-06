@@ -57,5 +57,10 @@ public class AnimeListResponse {
                 }
             }
         }
-    }
+
+        }
 }
+
+
+
+

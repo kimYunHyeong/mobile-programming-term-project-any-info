@@ -3,8 +3,11 @@ package com.example.mobile_programming_term_project_any_info.api;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
+
 import com.example.mobile_programming_term_project_any_info.AnimeResponse.AnimeResponse;
 import com.example.mobile_programming_term_project_any_info.AnimeResponse.AnimeListResponse;
+import com.example.mobile_programming_term_project_any_info.AnimeResponse.GenreResponse;
 
 
 public interface JikanApiService {
@@ -20,5 +23,11 @@ public interface JikanApiService {
 
     @GET("anime/{mal_id}")
     Call<AnimeResponse> getAnimeById(@Path("mal_id") int malId);
+
+    @GET("genres/anime")
+    Call<GenreResponse> getAnimeGenres();
+
+    @GET("anime")
+    Call<AnimeListResponse> getAnimeByGenre(@Query("genres") int genreId);
 
 }
