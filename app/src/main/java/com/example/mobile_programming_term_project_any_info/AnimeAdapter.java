@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,15 +19,17 @@ import java.util.List;
 public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHolder> {
 
     private List<AnimeListResponse.Data> animeList;
+    private Context context;
 
-    public AnimeAdapter(List<AnimeListResponse.Data> animeList) {
+    public AnimeAdapter(List<AnimeListResponse.Data> animeList, Context context) {
         this.animeList = animeList;
+        this.context = context;
     }
 
     @NonNull
     @Override
     public AnimeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.anime_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.anime_item, parent, false);
         return new AnimeViewHolder(view);
     }
 
@@ -34,24 +37,22 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHol
     public void onBindViewHolder(@NonNull AnimeViewHolder holder, int position) {
         AnimeListResponse.Data anime = animeList.get(position);
 
-        // 애니메이션 제목 설정
+        // 제목을 설정
         holder.titleTextView.setText(anime.getTitle());
 
-        // Glide를 사용해 대표 이미지 로드
-        Glide.with(holder.itemView.getContext())
-                .load(anime.getImages().getJpg().getImageUrl())  // 이미지 URL 확인 필요
-//                .placeholder(R.drawable.loading)  // 로딩 중 표시할 이미지
-//                .error(R.drawable.error)        // 오류 시 표시할 이미지
-                .into(holder.animeImageView);         // ImageView에 이미지 설정
+        // 이미지 URL을 가져오는 경로 수정
+        String imageUrl = anime.getImages().getJpg().getImageUrl();
+
+        // Glide를 사용하여 이미지 로드
+        Glide.with(context)
+                .load(imageUrl)
+                .into(holder.imageView);
 
         // 애니메이션 항목 클릭 시 세부 정보 페이지로 이동
         holder.itemView.setOnClickListener(v -> {
-            // Context는 itemView에서 얻을 수 있습니다.
-            Intent intent = new Intent(holder.itemView.getContext(), DetailActivity.class);
-            intent.putExtra("anime_title", anime.getTitle());
-            intent.putExtra("anime_synopsis", anime.getSynopsis()); // 시놉시스 전달
-            intent.putExtra("anime_image_url", anime.getImages().getJpg().getImageUrl());
-            holder.itemView.getContext().startActivity(intent); // DetailActivity로 이동
+            Intent intent = new Intent(context, DetailActivity.class);
+            intent.putExtra("anime_id", anime.getId());  // ID를 넘겨줌
+            context.startActivity(intent);
         });
     }
 
@@ -60,15 +61,22 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHol
         return animeList.size();
     }
 
-    // **ViewHolder 클래스 정의**
-    public static class AnimeViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTextView;
-        ImageView animeImageView;
+    public class AnimeViewHolder extends RecyclerView.ViewHolder {
 
-        public AnimeViewHolder(@NonNull View itemView) {
+        TextView titleTextView;
+        ImageView imageView;
+
+        public AnimeViewHolder(View itemView) {
             super(itemView);
-            titleTextView = itemView.findViewById(R.id.titleTextView);   // 레이아웃의 TextView ID
-            animeImageView = itemView.findViewById(R.id.animeImageView); // 레이아웃의 ImageView ID
+            titleTextView = itemView.findViewById(R.id.titleTextView);
+            imageView = itemView.findViewById(R.id.animeImageView);
         }
+    }
+
+    // 애니메이션 리스트를 업데이트하는 메서드
+    public void updateAnimeList(List<AnimeListResponse.Data> newAnimeList) {
+        animeList.clear();  // 기존 데이터 삭제
+        animeList.addAll(newAnimeList);  // 새 데이터 추가
+        notifyDataSetChanged();  // RecyclerView 갱신
     }
 }

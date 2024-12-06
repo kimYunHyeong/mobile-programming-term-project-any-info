@@ -40,108 +40,20 @@ public class AnimeListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_anime_list, container, false);
 
-        // RecyclerView 설정
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // 애니메이션 목록 어댑터 설정
         animeAdapter = new AnimeAdapter(animeList, getContext());
         recyclerView.setAdapter(animeAdapter);
 
-        // Retrofit API Service 초기화
         apiService = RetrofitClient.getClient().create(JikanApiService.class);
-
-        // 데이터 로드
-        getCurrentlyAiringAnime();
 
         return view;
     }
 
-    private void getCurrentlyAiringAnime() {
-        Call<AnimeListResponse> call = apiService.getCurrentlyAiringAnime();
-        call.enqueue(new Callback<AnimeListResponse>() {
-            @Override
-            public void onResponse(Call<AnimeListResponse> call, Response<AnimeListResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    animeList.clear();
-                    animeList.addAll(response.body().getData());
-                    animeAdapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(getContext(), "현재 방영 중인 애니메이션을 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AnimeListResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "네트워크 오류 발생", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    // 애니메이션 어댑터 클래스 (세부 정보 페이지로 이동하기 위한 클릭 리스너 설정)
-    public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHolder> {
-
-        private List<AnimeListResponse.Data> animeList;
-        private Context context;
-
-        public AnimeAdapter(List<AnimeListResponse.Data> animeList, Context context) {
-            this.animeList = animeList;
-            this.context = context;
-        }
-
-        @NonNull
-        @Override
-        public AnimeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(context).inflate(R.layout.anime_item, parent, false);
-            return new AnimeViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull AnimeViewHolder holder, int position) {
-            AnimeListResponse.Data anime = animeList.get(position);
-
-            // 제목을 설정
-            holder.titleTextView.setText(anime.getTitle());
-
-            // 이미지 URL을 가져오는 경로 수정
-            String imageUrl = anime.getImages().getJpg().getImageUrl();
-
-            // Glide를 사용하여 이미지 로드
-            Glide.with(context)
-                    .load(imageUrl)
-                    .into(holder.imageView);
-
-            // 애니메이션 항목 클릭 시 세부 정보 페이지로 이동
-            holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra("anime_id", anime.getId());  // ID를 넘겨줌
-                context.startActivity(intent);
-            });
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return animeList.size();
-        }
-
-        public class AnimeViewHolder extends RecyclerView.ViewHolder {
-
-            TextView titleTextView;
-            ImageView imageView;
-
-            public AnimeViewHolder(View itemView) {
-                super(itemView);
-                titleTextView = itemView.findViewById(R.id.titleTextView);
-                imageView = itemView.findViewById(R.id.animeImageView);
-            }
-        }
-
-        // 애니메이션 리스트를 업데이트하는 메서드
-        public void updateAnimeList(List<AnimeListResponse> newAnimeList) {
-            animeList.clear();  // 기존 데이터 삭제
-            animeList.addAll(newAnimeList);  // 새 데이터 추가
-            adapter.notifyDataSetChanged();  // RecyclerView 갱신
-        }
+    public void updateAnimeList(List<AnimeListResponse.Data> newAnimeList) {
+        animeList.clear(); // 기존 데이터 삭제
+        animeList.addAll(newAnimeList); // 새 데이터 추가
+        animeAdapter.notifyDataSetChanged(); // RecyclerView 갱신
     }
 }

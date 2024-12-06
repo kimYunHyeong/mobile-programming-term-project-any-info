@@ -59,6 +59,27 @@ public class AnimeListResponse {
         }
 
         }
+
+
+    public static class Anime {
+        @SerializedName("title")
+        private String title;
+
+        @SerializedName("image_url")
+        private String imageUrl;
+
+        // 기타 필요한 필드들
+
+        // getters
+        public String getTitle() {
+            return title;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
+        }
+    }
+
 }
 
 
