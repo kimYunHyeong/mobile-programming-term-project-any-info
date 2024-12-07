@@ -30,4 +30,14 @@ public interface JikanApiService {
     @GET("anime")
     Call<AnimeListResponse> getAnimeByGenre(@Query("genres") int genreId);
 
+    // 장르와 aired from 기준으로 애니메이션을 불러오는 메서드 추가
+    @GET("anime")
+    Call<AnimeListResponse> getAnimeByGenreAndAired(@Query("genre") int genreId, @Query("sort") String sortType);
+
+
+    @GET("anime")
+    Call<AnimeListResponse> getAnimeByGenreAndScore(@Query("genre") int genreId, @Query("sort") String sortType);
+
+    @GET("anime")
+    Call<AnimeListResponse> getAnimeByGenreAndPopularity(@Query("genre") int genreId, @Query("sort") String sortType);
 }

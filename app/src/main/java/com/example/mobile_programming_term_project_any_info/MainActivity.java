@@ -15,6 +15,7 @@ import com.example.mobile_programming_term_project_any_info.AnimeAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -26,9 +27,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     private JikanApiService apiService;
-    private Spinner genreSpinner;
+    private Spinner genreSpinner, filterSpinner;
     private AnimeListFragment animeListFragment;
-    private List<Integer> genreIds = new ArrayList<>();  // 장르 ID를 저장하는 리스트 추가
+    private List<Integer> genreIds = new ArrayList<>();  // 장르 ID를 저장하는 리스트
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +53,26 @@ public class MainActivity extends AppCompatActivity {
         apiService = retrofit.create(JikanApiService.class);
 
         genreSpinner = findViewById(R.id.genreSpinner);
+        filterSpinner = findViewById(R.id.filterSpinner); // 두 번째 스피너
+
         Button filterButton = findViewById(R.id.filterButton);
 
         loadGenres();
         loadCurrentlyAiringAnime(); // 앱 시작 시 상영중인 애니메이션을 불러오기
 
-        // Filter 버튼 클릭 시 동작
+        ArrayAdapter<CharSequence> filterAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.filter_options, // strings.xml에 정의된 필터 옵션을 사용
+                android.R.layout.simple_spinner_item
+        );
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterSpinner.setAdapter(filterAdapter);
+
+        // 필터 버튼 클릭 시 동작
         filterButton.setOnClickListener(v -> {
             int selectedGenreId = getSelectedGenreId(); // Spinner에서 선택한 장르의 ID 가져오기
-            loadAnimeByGenre(selectedGenreId); // 선택된 장르에 맞는 애니메이션 불러오기
+            String selectedFilter = getSelectedFilter(); // 두 번째 Spinner에서 선택한 필터 기준 가져오기
+            loadAnimeByGenreAndFilter(selectedGenreId, selectedFilter); // 장르와 필터 기준에 맞는 애니메이션 불러오기
         });
     }
 
@@ -93,6 +105,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private String getSelectedFilter() {
+        // 두 번째 스피너에서 선택된 필터 기준을 반환
+        return filterSpinner.getSelectedItem().toString();
+    }
+
     private int getSelectedGenreId() {
         // Spinner에서 선택된 장르의 ID를 반환
         return genreIds.get(genreSpinner.getSelectedItemPosition());
@@ -118,14 +135,32 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void loadAnimeByGenre(int genreId) {
-        // 선택된 장르에 맞는 애니메이션 불러오기
-        Call<AnimeListResponse> call = apiService.getAnimeByGenre(genreId);
+    private void loadAnimeByGenreAndFilter(int genreId, String filter) {
+        // 장르와 필터 기준에 맞는 애니메이션 불러오기
+        Call<AnimeListResponse> call;
+
+        switch (filter) {
+            case "Aired from (최신순)":
+                call = apiService.getAnimeByGenreAndAired(genreId, "aired.from"); // Aired 기준으로 필터링
+                break;
+            case "Score (높은 순)":
+                call = apiService.getAnimeByGenreAndScore(genreId, "score"); // Score 기준으로 필터링
+                break;
+            case "Popularity (높은 순)":
+                call = apiService.getAnimeByGenreAndPopularity(genreId, "popularity"); // Popularity 기준으로 필터링
+                break;
+            default:
+                call = apiService.getAnimeByGenre(genreId); // 기본 장르로 필터링
+                break;
+        }
+
         call.enqueue(new Callback<AnimeListResponse>() {
             @Override
             public void onResponse(Call<AnimeListResponse> call, Response<AnimeListResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    animeListFragment.updateAnimeList(response.body().getData());
+                    List<AnimeListResponse.Anime> animeList = response.body().getData(); // 여기에서 animeList 변수 정의
+                    sortAnimeListDescending(animeList, filter); // 필터 기준에 맞춰서 정렬
+                    animeListFragment.updateAnimeList(animeList); // 정렬된 애니메이션 리스트 갱신
                 } else {
                     Toast.makeText(MainActivity.this, "애니메이션 데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
                 }
@@ -137,4 +172,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void sortAnimeListDescending(List<AnimeListResponse.Anime> animeList, String sortBy) {
+        // sortBy: "score", "aired_from", "popularity" 중 하나
+
+        switch (sortBy) {
+            case "score":
+                // 점수 기준 내림차순 정렬
+                Collections.sort(animeList, (a, b) -> Float.compare(b.getScore(), a.getScore()));
+                break;
+
+            case "aired_from":
+                // 방영일 기준 내림차순 정렬 (최신순)
+                Collections.sort(animeList, (a, b) -> b.getAired().getFrom().compareTo(a.getAired().getFrom()));
+                break;
+
+            case "popularity":
+                // 인기 기준 내림차순 정렬
+                Collections.sort(animeList, (a, b) -> Integer.compare(b.getPopularity(), a.getPopularity()));
+                break;
+        }
+    }
 }
+

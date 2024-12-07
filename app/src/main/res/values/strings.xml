@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">mobile-programming-term-project-any-info</string>
+        <string-array name="filter_options">
+            <item>Aired from (Top-down)</item>
+            <item>Score (Top-down)</item>
+            <item>Popularity (Top-down)</item>
+        </string-array>
 </resources>
