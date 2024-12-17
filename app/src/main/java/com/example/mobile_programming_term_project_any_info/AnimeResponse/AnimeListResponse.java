@@ -78,50 +78,7 @@ public class AnimeListResponse {
         public String getImageUrl() {
             return imageUrl;
         }
-
-
-            @SerializedName("aired")
-            private Aired aired;
-
-            public Aired getAired() {
-                return aired;
-            }
-
-            public static class Aired {
-                @SerializedName("from")
-                private String from;
-
-                @SerializedName("to")
-                private String to;
-
-                public String getFrom() {
-                    return from;
-                }
-
-                public String getTo() {
-                    return to;
-                }
-            }
-
-
-        @SerializedName("score")
-        private String score;
-
-        @SerializedName("popularity")
-        private String popularity;
-
-        // getScore() 메서드: score 값 반환
-        public String getScore() {
-            return score;
-        }
-
-        // getPopularity() 메서드: popularity 값 반환
-        public String getPopularity() {
-            return popularity;
-        }
     }
-
-
 
 }
 
