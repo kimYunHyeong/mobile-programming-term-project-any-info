@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-
+//spiner에 표시할 장르 정보 받아오기
 public class GenreResponse {
     @SerializedName("data")
     private List<Genre> genres;

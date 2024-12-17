@@ -35,6 +35,7 @@ public class AnimeListFragment extends Fragment {
     private List<AnimeListResponse.Data> animeList = new ArrayList<>();
     private JikanApiService apiService;
 
+    //프래그먼트를 통해 애니메이션 리스트를 각각 하나의 프래그먼트로 구성하고 화면에 출력
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,8 +53,8 @@ public class AnimeListFragment extends Fragment {
     }
 
     public void updateAnimeList(List<AnimeListResponse.Data> newAnimeList) {
-        animeList.clear(); // 기존 데이터 삭제
-        animeList.addAll(newAnimeList); // 새 데이터 추가
-        animeAdapter.notifyDataSetChanged(); // RecyclerView 갱신
+        animeList.clear();
+        animeList.addAll(newAnimeList);
+        animeAdapter.notifyDataSetChanged();
     }
 }

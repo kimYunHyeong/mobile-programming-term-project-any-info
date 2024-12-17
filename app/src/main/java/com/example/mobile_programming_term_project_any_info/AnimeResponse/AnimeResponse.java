@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class AnimeResponse {
-    // 단일 애니메이션 객체를 위한 필드
+    // 단일 애니메이션 객체를 위한 리스폰스 함수
     @SerializedName("data")
     private Data data;
 
-    // 데이터 반환 메서드
+    //아이디, 이미지 등 feature 받기
     public Data getData() {
         return data;
     }
@@ -83,7 +83,7 @@ public class AnimeResponse {
             }
         }
 
-        // Aired 클래스 정의
+        //상영중인 애니메이션 확인
         public static class Aired {
             @SerializedName("from")
             private String from;
@@ -100,7 +100,7 @@ public class AnimeResponse {
             }
         }
 
-        // Images 클래스 정의
+        //대표 이미지 받기
         public static class Images {
             @SerializedName("jpg")
             private Jpg jpg;

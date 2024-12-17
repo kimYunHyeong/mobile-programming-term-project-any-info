@@ -73,10 +73,11 @@ public class AnimeAdapter extends RecyclerView.Adapter<AnimeAdapter.AnimeViewHol
         }
     }
 
-    // 애니메이션 리스트를 업데이트하는 메서드
+    // 애니메이션 리스트를 업데이트
+    //장르별로 선택이 되면 이미 화면에 표시된 애니메이션 리스트를 제거하고 새로운 애니메이션 리스트를 생성
     public void updateAnimeList(List<AnimeListResponse.Data> newAnimeList) {
-        animeList.clear();  // 기존 데이터 삭제
-        animeList.addAll(newAnimeList);  // 새 데이터 추가
-        notifyDataSetChanged();  // RecyclerView 갱신
+        animeList.clear();
+        animeList.addAll(newAnimeList);
+        notifyDataSetChanged();
     }
 }

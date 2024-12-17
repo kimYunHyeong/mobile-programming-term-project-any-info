@@ -14,14 +14,17 @@ public class AnimeListResponse {
     public static class Data {
         private String title;
 
-        @SerializedName("mal_id")  // Jikan API의 애니메이션 ID 필드
-        private int id;  // 애니메이션 ID 필드 추가
+        //애니메이션 아이디
+        @SerializedName("mal_id")
+        private int id;
 
+        //대표 이미지
         @SerializedName("images")
         private Images images;
 
-        @SerializedName("synopsis")  // 설명 필드를 시놉시스로 추가
-        private String synopsis; // 시놉시스 필드 추가
+        //시놉시스
+        @SerializedName("synopsis")
+        private String synopsis;
 
         public String getTitle() {
             return title;
@@ -35,7 +38,7 @@ public class AnimeListResponse {
             return synopsis;
         }
 
-        // getId() 메서드 추가
+        //아이디 받기
         public int getId() {
             return id;
         }

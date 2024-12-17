@@ -64,42 +64,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void loadGenres() {
-        Call<GenreResponse> call = apiService.getAnimeGenres();
-
-        call.enqueue(new Callback<GenreResponse>() {
-            @Override
-            public void onResponse(Call<GenreResponse> call, Response<GenreResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<GenreResponse.Genre> genres = response.body().getGenres();
-                    List<String> genreNames = new ArrayList<>();
-
-                    for (GenreResponse.Genre genre : genres) {
-                        genreNames.add(genre.getName());
-                        genreIds.add(genre.getMalId()); // 장르 ID를 genreIds 리스트에 추가
-                    }
-
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, genreNames);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                    genreSpinner.setAdapter(adapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GenreResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Failed to load genres", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private int getSelectedGenreId() {
-        // Spinner에서 선택된 장르의 ID를 반환
-        return genreIds.get(genreSpinner.getSelectedItemPosition());
-    }
-
+    //앱을 처음 실행 시 상영중인 애니메이션 표시
     private void loadCurrentlyAiringAnime() {
-        // 상영중인 애니메이션 불러오기
         Call<AnimeListResponse> call = apiService.getCurrentlyAiringAnime();
         call.enqueue(new Callback<AnimeListResponse>() {
             @Override
@@ -118,8 +84,41 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //API로부터 장르 정보를 가져와 스피너에 추가
+    private void loadGenres() {
+        Call<GenreResponse> call = apiService.getAnimeGenres();
+
+        call.enqueue(new Callback<GenreResponse>() {
+            @Override
+            public void onResponse(Call<GenreResponse> call, Response<GenreResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<GenreResponse.Genre> genres = response.body().getGenres();
+                    List<String> genreNames = new ArrayList<>();
+
+                    for (GenreResponse.Genre genre : genres) {
+                        genreNames.add(genre.getName());
+                        genreIds.add(genre.getMalId()); // 장르 ID를 genreIds 리스트에 추가
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, genreNames);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    genreSpinner.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenreResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Failed to load genres", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //유저가 선택한 장르를 반환
+    private int getSelectedGenreId() {
+        return genreIds.get(genreSpinner.getSelectedItemPosition());
+    }
+
+    // 선택된 장르에 맞는 애니메이션 불러오기
     private void loadAnimeByGenre(int genreId) {
-        // 선택된 장르에 맞는 애니메이션 불러오기
         Call<AnimeListResponse> call = apiService.getAnimeByGenre(genreId);
         call.enqueue(new Callback<AnimeListResponse>() {
             @Override

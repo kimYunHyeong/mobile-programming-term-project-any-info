@@ -24,10 +24,6 @@ import android.text.style.StyleSpan;
 import android.graphics.Typeface;
 import java.util.List;
 
-
-
-
-
     public class DetailActivity extends AppCompatActivity {
         private TextView descriptionTextView;
         private TextView titleTextView;
@@ -46,7 +42,6 @@ import java.util.List;
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_detail);
 
-            // UI 컴포넌트 참조
             titleTextView = findViewById(R.id.titleTextView);
             animeImageView = findViewById(R.id.animeImageView);
             descriptionTextView = findViewById(R.id.descriptionTextView);
@@ -58,7 +53,7 @@ import java.util.List;
             sourceTextView = findViewById(R.id.sourceTextView);
             backButton = findViewById(R.id.backButton);
 
-            // 인텐트에서 데이터 받기
+            //인텐트에서 데이터 받기
             Intent intent = getIntent();
             int mal_id = intent.getIntExtra("anime_id", -1);  // 애니메이션 ID로 mal_id 사용
 
@@ -96,7 +91,7 @@ import java.util.List;
                                 .load(anime.getImages().getJpg().getImageUrl())
                                 .into(animeImageView);
 
-                        // 방영 기간
+                        //세부정보 표시
                         setBoldText(airedFromTextView, "Aired From: ", anime.getAired().getFrom());
                         setBoldText(airedToTextView, "Aired To: ", anime.getAired().getTo() != null ? anime.getAired().getTo() : "On Airing");
                         setGenresTextView(genresTextView, "Genres: ", anime.getGenres());
@@ -119,19 +114,14 @@ import java.util.List;
                 String fullText = title + value;
                 SpannableString spannableText = new SpannableString(fullText);
 
-                // 제목 부분 (예: "Rank: ")을 볼드체로 설정
+                //feature들(장르, 시놉시스 등) 앞에 볼드체로 표시
                 spannableText.setSpan(new StyleSpan(Typeface.BOLD), 0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                // 텍스트를 TextView에 설정
                 textView.setText(spannableText);
-
-
-                
             }
 
 
         private void setGenresTextView(TextView genresTextView, String label, List<AnimeResponse.Data.Genre> genres) {
-            // 장르 텍스트 생성
+            // 장르는 여러 개가 있으므로 별도로 볼드처리
             StringBuilder genresText = new StringBuilder();
 
             // 장르 리스트에서 각 장르 이름을 가져와서 쉼표로 구분하여 추가
@@ -141,8 +131,6 @@ import java.util.List;
                     genresText.append(", ");  // 마지막 장르 뒤에는 쉼표 추가 안 함
                 }
             }
-
-            // 최종 생성된 텍스트를 setBoldText에 전달 (Genres:만 볼드체)
             setBoldText(genresTextView, "Genres: ", genresText.toString());  // "Genres: "는 볼드체, 그 뒤는 일반 텍스트
         }
 
